@@ -1,6 +1,6 @@
 {
   "name": "stock-calculator",
-  "homepage": "https://tangadeparag.github.io/stock-calculator",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
