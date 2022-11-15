@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/tangadeparag/stock-calculator/static/css/main.d05bcbff.css",
-    "main.js": "/tangadeparag/stock-calculator/static/js/main.e0786015.js",
-    "static/js/787.de1c225a.chunk.js": "/tangadeparag/stock-calculator/static/js/787.de1c225a.chunk.js",
-    "index.html": "/tangadeparag/stock-calculator/index.html",
-    "main.d05bcbff.css.map": "/tangadeparag/stock-calculator/static/css/main.d05bcbff.css.map",
-    "main.e0786015.js.map": "/tangadeparag/stock-calculator/static/js/main.e0786015.js.map",
-    "787.de1c225a.chunk.js.map": "/tangadeparag/stock-calculator/static/js/787.de1c225a.chunk.js.map"
+    "main.css": "./static/css/main.d05bcbff.css",
+    "main.js": "./static/js/main.01b560d5.js",
+    "static/js/787.de1c225a.chunk.js": "./static/js/787.de1c225a.chunk.js",
+    "index.html": "./index.html",
+    "main.d05bcbff.css.map": "./static/css/main.d05bcbff.css.map",
+    "main.01b560d5.js.map": "./static/js/main.01b560d5.js.map",
+    "787.de1c225a.chunk.js.map": "./static/js/787.de1c225a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d05bcbff.css",
-    "static/js/main.e0786015.js"
+    "static/js/main.01b560d5.js"
   ]
 }
