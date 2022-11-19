@@ -48,7 +48,6 @@ export const GannTable = () => {
       );
       resistanceValues.push({ degree: degree, resistance: resistance });
     });
-    console.log("resistanceValues", resistanceValues);
     setResistancePrice(resistanceValues);
   };
 
@@ -61,8 +60,6 @@ export const GannTable = () => {
       );
       suppportValues.push({ degree: degree, support: support });
     });
-    console.log("suppportValues", suppportValues);
-
     setSupportPrice(suppportValues);
   };
 
@@ -83,8 +80,8 @@ export const GannTable = () => {
     });
   };
 
-  const onCopyText = (e: any) => {
-    toast(`Value coopied ${e}`);
+  const onCopyText = (e: any, param: string) => {
+    toast(`${param} copied ${e}`);
   };
 
   // Map table rows
@@ -97,18 +94,21 @@ export const GannTable = () => {
               {degree}
             </th>
 
-            <CopyToClipboard text={resistance} onCopy={onCopyText}>
+            <CopyToClipboard
+              text={resistance}
+              onCopy={(e) => onCopyText(e, "Resistance")}
+            >
               <th
                 scope="row"
                 className="text-center text-primary"
-                onCopy={(e) => onCopyText(e)}
+                onCopy={(e) => onCopyText(e, "Resistance")}
               >
                 {resistance}
               </th>
             </CopyToClipboard>
             <CopyToClipboard
               text={renderSupport(degree)?.toString()?.replaceAll(",", "")}
-              onCopy={onCopyText}
+              onCopy={(e) => onCopyText(e, "Support")}
             >
               <th scope="row" className="text-center text-danger">
                 {renderSupport(degree)}

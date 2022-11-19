@@ -11,62 +11,46 @@ const UserForm = () => {
     { key: "First", share_quantity: 0, share_price: 0 },
     { key: "Second", share_quantity: 0, share_price: 0 },
   ]);
+  const [shareFinalData, setShareFinalData] = useState<any>({
+    totalUnits: null,
+    averagePrice: null,
+    totalAmount: null,
+  });
+  const [isButtonDisabled, setisButtonDisabled] = useState(true);
 
-  useEffect(() => {
-    console.log("shareAverageData", shareAverageData);
-  }, [shareAverageData, setShareAverageData]);
-
-  // const handleChange = (e: any) => {
-  //   console.log(e.target.name, e.target.value);
-  //   let aa = e.target.name;
-  //   setFormData({
-  //     ...formData,
-  //     [aa]: e.target.value,
-  //   });
-  // };
-
-  // const renderFormFields = () => {
-  //   return (
-  //     userFormConstants?.length &&
-  //     userFormConstants?.map((field) => {
-  //       return (
-  //         <div className="form-group" key={field.key}>
-  //           <label htmlFor="exampleInputEmail1">{field?.label}</label>
-  //           <input
-  //             type={field?.type}
-  //             className="form-control"
-  //             name={field?.key}
-  //             id="exampleInputEmail1"
-  //             aria-describedby="emailHelp"
-  //             placeholder={`Enter ${field?.label}`}
-  //             onChange={(e) => handleChange(e)}
-  //           />
-  //           {field.key === "email" && (
-  //             <small id="emailHelp" className="form-text text-muted">
-  //               We'll never share your email with anyone else.
-  //             </small>
-  //           )}
-  //         </div>
-  //       );
-  //     })
-  //   );
-  // };
+  const submitButtonDisabledCondition = () => {
+    const getArray = shareAverageData.map((item: any) => {
+      return Object.values(item);
+    });
+    const containsZero = getArray.flat()?.includes(0);
+    if (containsZero) {
+      setisButtonDisabled(true);
+    } else {
+      setisButtonDisabled(false);
+    }
+  };
 
   const handleChangeShareAverage = (e: any, param: string) => {
+    setShareFinalData({
+      totalUnits: 0,
+      averagePrice: 0,
+      totalAmount: 0,
+    });
+
     if (param === "First") {
       let tempShareAverageData = shareAverageData;
       tempShareAverageData[0][e.target.name] = Number(e.target.value);
       setShareAverageData(tempShareAverageData);
-      console.log("tempShareAverageData", tempShareAverageData);
+      submitButtonDisabledCondition();
     } else {
       let tempShareAverageData = shareAverageData;
       tempShareAverageData[1][e.target.name] = Number(e.target.value);
       setShareAverageData(tempShareAverageData);
+      submitButtonDisabledCondition();
     }
   };
 
   const mapShareAverageValues = (item: string, param: string) => {
-    // console.log(item, shareAverageData[0][item]);
     if (param === "First") {
       return shareAverageData?.[0]?.item;
     } else {
@@ -87,15 +71,15 @@ const UserForm = () => {
       shareAverageData?.[0]?.share_quantity +
       shareAverageData?.[1]?.share_quantity;
     const totalAmount =
-      shareAverageData?.[0]?.share_price + shareAverageData?.[1]?.share_price;
-    console.log("totalUnits", totalUnits, averagePrice);
-    return (
-      <div>
-        <p>Total Units : {totalUnits}</p>
-        <p>Average Price : {averagePrice}</p>
-        <p>Total Amount : {totalAmount}</p>
-      </div>
-    );
+      shareAverageData?.[0]?.share_price *
+        shareAverageData?.[0]?.share_quantity +
+      shareAverageData?.[1]?.share_price *
+        shareAverageData?.[1]?.share_quantity;
+    setShareFinalData({
+      totalUnits: totalUnits,
+      averagePrice: averagePrice,
+      totalAmount: totalAmount,
+    });
   };
 
   const renderShareFormFields = (param: string) => {
@@ -124,41 +108,12 @@ const UserForm = () => {
     });
   };
 
-  const shareButtonDisabledCondition = useCallback(() => {
-    let tempShareAverageKeys: any = [];
-
-    console.log("inside", shareAverageData, shareAverageData?.length);
-    if (shareAverageData?.length) {
-      shareAverageData?.forEach(
-        (item: object) =>
-          // tempShareAverageKeys.push(...Object.values(item))
-          (tempShareAverageKeys = [
-            ...tempShareAverageKeys,
-            ...Object.values(item),
-          ])
-      );
-    }
-    console.log("tempShareAverageKeys", tempShareAverageKeys);
-    if (
-      tempShareAverageKeys?.length &&
-      tempShareAverageKeys?.find((item: any) => item === "")
-    ) {
-      return false;
-    }
-
-    return true;
+  useEffect(() => {
+    submitButtonDisabledCondition();
   }, [shareAverageData]);
 
   return (
     <div className="container">
-      {/* <form className="mt-5">
-        <>
-          {renderFormFields()}
-          <button type="submit" className="btn btn-primary mt-2">
-            Submit
-          </button>
-        </>
-      </form> */}
       <div className="mt-5">
         <>
           <div className="row">
@@ -176,8 +131,7 @@ const UserForm = () => {
               <button
                 type="submit"
                 className="btn btn-primary mt-3"
-                // disabled={shareButtonDisabledCondition()}
-                disabled={false}
+                disabled={isButtonDisabled}
                 onClick={() => {
                   calculateAveragePrice();
                 }}
@@ -186,7 +140,17 @@ const UserForm = () => {
               </button>
             </div>
           </div>
-          <div>{calculateAveragePrice()}</div>
+          <div>
+            {Object.values(shareFinalData)?.filter(Boolean)?.length ? (
+              <div>
+                <p>Total Units : {shareFinalData?.totalUnits}</p>
+                <p>Average Price : {shareFinalData?.averagePrice} </p>
+                <p>Total Amount : {shareFinalData?.totalAmount}</p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </>
       </div>
     </div>
